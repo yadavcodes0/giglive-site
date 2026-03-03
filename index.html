@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gig Live — Live Music Marketplace</title>
+  <meta name="description"
+    content="Gig Live connects freelance musicians with cafés, restaurants, and venues for live performances. Showcase your talent or book live shows — all in one place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Design Tokens (from Flutter constants.dart) ── */
+    :root {
+      --primary: #8E2DE2;
+      --primary-light: #A044FF;
+      --primary-dark: #4A00E0;
+      --accent: #FF416C;
+      --accent-orange: #FF9A44;
+      --success: #10B981;
+      --warning: #FDAA5E;
+      --error: #EF4444;
+
+      --dark-bg: #0F0C29;
+      --dark-surface: #1A1A2E;
+      --dark-divider: #2D2D44;
+      --dark-text: #F8FAFC;
+      --dark-text-secondary: #94A3B8;
+
+      --font-heading: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+
+      --gradient-primary: linear-gradient(135deg, #8E2DE2, #4A00E0);
+      --gradient-accent: linear-gradient(135deg, #8E2DE2, #FF416C);
+      --gradient-button: linear-gradient(90deg, #8E2DE2, #DA22FF, #FF416C);
+      --gradient-splash: linear-gradient(180deg, #0F0C29, #302B63, #24243E);
+
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 30px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--dark-bg);
+      color: var(--dark-text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-family: var(--font-heading);
+    }
+
+    /* ── Utility ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-pad {
+      padding: 100px 0;
+    }
+
+    .text-gradient {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(15, 12, 41, 0.7);
+      border-bottom: 1px solid rgba(45, 45, 68, 0.5);
+      transition: background 0.3s;
+    }
+
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: 2px;
+    }
+
+    .nav-logo-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo-icon img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-cta {
+      background: var(--gradient-button);
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(142, 45, 226, 0.3);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(142, 45, 226, 0.4);
+    }
+
+    .nav-hamburger {
+      display: none;
+      background: none;
+      color: #fff;
+      font-size: 28px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .hero-glow-1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(142, 45, 226, 0.15);
+      top: -100px;
+      right: -100px;
+    }
+
+    .hero-glow-2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(255, 65, 108, 0.1);
+      bottom: -80px;
+      left: -80px;
+    }
+
+    .hero-glow-3 {
+      width: 300px;
+      height: 300px;
+      background: rgba(74, 0, 224, 0.12);
+      top: 40%;
+      left: 30%;
+      animation: floatGlow 6s ease-in-out infinite;
+    }
+
+    @keyframes floatGlow {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(30px, -20px) scale(1.1);
+      }
+    }
+
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 56px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero-content p {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--gradient-button);
+      color: #fff;
+      padding: 16px 36px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 17px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(255, 65, 108, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(255, 65, 108, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--dark-surface);
+      color: #fff;
+      padding: 16px 36px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 17px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--dark-divider);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary-light);
+    }
+
+    /* ── Phone Mockup ── */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .phone-mockup {
+      width: 280px;
+      min-height: 560px;
+      background: #0D0B20;
+      border-radius: 40px;
+      border: 3px solid var(--dark-divider);
+      padding: 16px;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(142, 45, 226, 0.1),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(142, 45, 226, 0.08);
+      overflow: hidden;
+    }
+
+    .phone-notch {
+      width: 120px;
+      height: 28px;
+      background: #0D0B20;
+      border-radius: 0 0 16px 16px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+    }
+
+    .phone-screen {
+      background: var(--dark-bg);
+      border-radius: 28px;
+      min-height: 520px;
+      padding: 40px 18px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-screen-glow {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 150px;
+      background: rgba(142, 45, 226, 0.2);
+      border-radius: 50%;
+      filter: blur(50px);
+    }
+
+    .phone-logo-ring {
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-logo-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-logo-inner img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    .phone-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-subtitle {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.45);
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-label {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 12px;
+      color: #fff;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-input {
+      display: flex;
+      align-items: center;
+      background: var(--dark-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--dark-divider);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-input-prefix {
+      padding: 12px 14px;
+      border-right: 1px solid var(--dark-divider);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-heading);
+    }
+
+    .phone-input-field {
+      padding: 12px 14px;
+      flex: 1;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 14px;
+    }
+
+    .phone-btn {
+      width: 100%;
+      background: var(--gradient-button);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: #fff;
+      font-size: 15px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 6px 20px rgba(255, 65, 108, 0.3);
+    }
+
+    .floating-card {
+      position: absolute;
+      background: var(--dark-surface);
+      border-radius: 16px;
+      border: 1px solid var(--dark-divider);
+      padding: 14px 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      animation: floatCard 5s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .floating-card-1 {
+      top: 60px;
+      right: -40px;
+      animation-delay: 0s;
+    }
+
+    .floating-card-2 {
+      bottom: 100px;
+      left: -40px;
+      animation-delay: 1.5s;
+    }
+
+    @keyframes floatCard {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .floating-card-label {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .floating-card-value {
+      font-size: 20px;
+      font-weight: 800;
+      font-family: var(--font-heading);
+    }
+
+    .floating-card-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 2px;
+    }
+
+    /* ── Stats Strip ── */
+    .stats-strip {
+      background: var(--dark-surface);
+      border-top: 1px solid var(--dark-divider);
+      border-bottom: 1px solid var(--dark-divider);
+      padding: 40px 0;
+    }
+
+    .stats-strip .container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 40px;
+      margin-bottom: 4px;
+    }
+
+    .stat-item p {
+      font-size: 14px;
+      color: var(--dark-text-secondary);
+      font-weight: 500;
+    }
+
+    /* ── Features ── */
+    .features {
+      background: var(--dark-bg);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header .label {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--primary-light);
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 42px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-divider);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(142, 45, 226, 0.3);
+      box-shadow: 0 16px 48px rgba(142, 45, 226, 0.1);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon .material-icons-round {
+      font-size: 26px;
+      color: #fff;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.7;
+    }
+
+    /* ── How It Works ── */
+    .how-it-works {
+      background: linear-gradient(180deg, var(--dark-bg), #100e2a);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 60px;
+    }
+
+    .steps-column h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .steps-column>p {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 32px;
+    }
+
+    .step {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .step-content h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.6;
+    }
+
+    /* ── Genres ── */
+    .genres {
+      background: var(--dark-bg);
+      overflow: hidden;
+    }
+
+    .genres-scroll {
+      display: flex;
+      gap: 12px;
+      animation: scrollGenres 30s linear infinite;
+      width: max-content;
+    }
+
+    .genres-scroll:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollGenres {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .genre-chip {
+      padding: 12px 28px;
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-divider);
+      border-radius: 30px;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s;
+      cursor: default;
+    }
+
+    .genre-chip:hover {
+      border-color: var(--primary-light);
+      color: #fff;
+    }
+
+    .genre-chip.active {
+      background: var(--gradient-accent);
+      border: none;
+      color: #fff;
+    }
+
+    /* ── Testimonials ── */
+    .testimonials {
+      background: linear-gradient(180deg, #100e2a, var(--dark-bg));
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-divider);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: transform 0.3s;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .testimonial-stars {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-stars .material-icons-round {
+      font-size: 18px;
+      color: var(--warning);
+    }
+
+    .testimonial-card blockquote {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .testimonial-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .testimonial-role {
+      font-size: 12px;
+      color: var(--dark-text-secondary);
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box {
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-divider);
+      border-radius: 32px;
+      padding: 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(142, 45, 226, 0.06) 0%, transparent 60%);
+    }
+
+    .cta-box h2 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 40px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-box p {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 36px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .store-btn {
+      background: #000;
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .store-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .store-btn-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .store-btn-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--dark-surface);
+      border-top: 1px solid var(--dark-divider);
+      padding: 60px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 12px;
+      max-width: 300px;
+      line-height: 1.7;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 16px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--dark-divider);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-social {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .footer-social:hover {
+      background: rgba(142, 45, 226, 0.2);
+    }
+
+    .footer-social .material-icons-round {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* ── Scroll Animations ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-content p {
+        margin: 0 auto 36px;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        margin-top: 40px;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-hamburger {
+        display: block;
+      }
+
+      /* Mobile menu */
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 12, 41, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 24px;
+        border-bottom: 1px solid var(--dark-divider);
+        gap: 20px;
+      }
+
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-strip .container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header h2 {
+        font-size: 30px;
+      }
+
+      .cta-box {
+        padding: 40px 24px;
+      }
+
+      .cta-box h2 {
+        font-size: 28px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-card {
+        display: none;
+      }
+
+      .phone-mockup {
+        width: 240px;
+        min-height: 480px;
+      }
+
+      .phone-screen {
+        min-height: 440px;
+        padding: 36px 14px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-content h1 {
+        font-size: 30px;
+      }
+
+      .stat-item h3 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════ NAVIGATION ═══════════ -->
+  <nav class="nav" id="nav">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">
+          <img src="icon.png" alt="Gig Live">
+        </div>
+        GIG LIVE
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#genres">Genres</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#download" class="nav-cta">Download App</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="material-icons-round">menu</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-glow hero-glow-3"></div>
+    <div class="container">
+      <div class="hero-content fade-up">
+        <h1>Your Stage.<br /><span class="text-gradient">Their Venue.</span><br />One App.</h1>
+        <p>Gig Live connects freelance musicians with cafés, restaurants, and venues for live performances. Showcase
+          your talent or find the perfect artist — all in one place.</p>
+        <div class="hero-buttons">
+          <a href="#download" class="btn-primary">
+            Get Started
+            <span class="material-icons-round" style="font-size:20px">arrow_forward</span>
+          </a>
+          <a href="#features" class="btn-secondary">
+            <span class="material-icons-round" style="font-size:20px">play_circle</span>
+            Learn More
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual fade-up" style="transition-delay: 0.2s;">
+        <!-- Floating stat cards around phone -->
+        <div class="floating-card floating-card-1">
+          <div class="floating-card-label">Earnings</div>
+          <div class="floating-card-value text-gradient">₹42,500</div>
+          <div class="floating-card-sub">This month</div>
+        </div>
+        <div class="floating-card floating-card-2">
+          <div class="floating-card-label">Bookings</div>
+          <div class="floating-card-value" style="color: var(--success);">+12</div>
+          <div class="floating-card-sub">New requests</div>
+        </div>
+        <!-- Phone mockup -->
+        <div class="phone-mockup">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-screen-glow"></div>
+            <div class="phone-logo-ring">
+              <div class="phone-logo-inner">
+                <img src="icon.png" alt="Gig Live">
+              </div>
+            </div>
+            <div class="phone-title">Welcome to Gig Live</div>
+            <div class="phone-subtitle">Sign in to find your next gig or the perfect artist.</div>
+            <div class="phone-label">Phone Number</div>
+            <div class="phone-input">
+              <div class="phone-input-prefix">🇮🇳 +91</div>
+              <div class="phone-input-field">Enter mobile number</div>
+            </div>
+            <div class="phone-btn">
+              Continue
+              <span class="material-icons-round" style="font-size:18px">arrow_forward</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ STATS STRIP ═══════════ -->
+  <section class="stats-strip fade-up">
+    <div class="container">
+      <div class="stat-item">
+        <h3 class="text-gradient" id="statMusicians">500+</h3>
+        <p>Musicians Onboard</p>
+      </div>
+      <div class="stat-item">
+        <h3 class="text-gradient" id="statVenues">200+</h3>
+        <p>Venues Connected</p>
+      </div>
+      <div class="stat-item">
+        <h3 class="text-gradient" id="statGigs">2,500+</h3>
+        <p>Gigs Completed</p>
+      </div>
+      <div class="stat-item">
+        <h3 class="text-gradient" id="statCities">29</h3>
+        <p>States Covered</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FEATURES ═══════════ -->
+  <section class="features section-pad" id="features">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="label">Features</div>
+        <h2>Everything You Need to<br /><span class="text-gradient">Go Live</span></h2>
+        <p>From profiles to bookings, earnings tracking to genre search — built for musicians and venues alike.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-up">
+          <div class="feature-icon" style="background: var(--gradient-primary);">
+            <span class="material-icons-round">person</span>
+          </div>
+          <h3>Professional Profiles</h3>
+          <p>Create a stunning musician profile with genres, bio, experience, sample links, city, and hourly rate.
+            Venues get their own profiles too.</p>
+        </div>
+        <div class="feature-card fade-up" style="transition-delay:0.1s">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #FF416C, #FF9A44);">
+            <span class="material-icons-round">calendar_month</span>
+          </div>
+          <h3>Smart Booking System</h3>
+          <p>Send booking requests with date, time, and event details. Accept or decline with one tap. Track all gig
+            statuses in real time.</p>
+        </div>
+        <div class="feature-card fade-up" style="transition-delay:0.2s">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <span class="material-icons-round">account_balance_wallet</span>
+          </div>
+          <h3>Earnings Dashboard</h3>
+          <p>Track your total earnings, monthly trends, and gig history with a beautiful visual dashboard and sparkline
+            charts.</p>
+        </div>
+        <div class="feature-card fade-up" style="transition-delay:0.1s">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #4A00E0, #8E2DE2);">
+            <span class="material-icons-round">search</span>
+          </div>
+          <h3>Discover Musicians</h3>
+          <p>Filter by genre, search by city or name, and browse musician cards to find the perfect artist for your
+            venue.</p>
+        </div>
+        <div class="feature-card fade-up" style="transition-delay:0.2s">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #DA22FF, #8E2DE2);">
+            <span class="material-icons-round">phone_android</span>
+          </div>
+          <h3>Phone OTP Login</h3>
+          <p>Secure and frictionless authentication with phone number OTP verification. No passwords to remember.</p>
+        </div>
+        <div class="feature-card fade-up" style="transition-delay:0.3s">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #FF416C, #FF6B6B);">
+            <span class="material-icons-round">notifications</span>
+          </div>
+          <h3>Real-Time Updates</h3>
+          <p>Get instant notifications for new booking requests, accepted gigs, and important updates about your
+            performances.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ HOW IT WORKS ═══════════ -->
+  <section class="how-it-works section-pad" id="how-it-works">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="label">How It Works</div>
+        <h2>Simple for <span class="text-gradient">Everyone</span></h2>
+        <p>Whether you're a musician looking for gigs or a venue searching for live talent — we've got you covered.</p>
+      </div>
+      <div class="steps-grid">
+        <!-- Musicians -->
+        <div class="steps-column fade-up">
+          <h3>🎤 For Musicians</h3>
+          <p>Showcase your talent and get booked by top venues.</p>
+          <div class="step">
+            <div class="step-number" style="background: var(--gradient-primary);">1</div>
+            <div class="step-content">
+              <h4>Create Your Profile</h4>
+              <p>Add your name, genres, experience level, hourly rate, city, and bio to stand out.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number" style="background: var(--gradient-primary);">2</div>
+            <div class="step-content">
+              <h4>Get Discovered</h4>
+              <p>Venues browse and filter musicians by genre and city. Your profile is your stage.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number" style="background: var(--gradient-primary);">3</div>
+            <div class="step-content">
+              <h4>Accept Bookings</h4>
+              <p>Review incoming booking requests with event details, and accept or decline with a tap.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number" style="background: var(--gradient-primary);">4</div>
+            <div class="step-content">
+              <h4>Perform & Earn</h4>
+              <p>Show up, play your set, and track your earnings right from the dashboard.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Venues -->
+        <div class="steps-column fade-up" style="transition-delay:0.2s">
+          <h3>🏪 For Venues</h3>
+          <p>Find and book live talent for your café, restaurant, or event.</p>
+          <div class="step">
+            <div class="step-number" style="background: linear-gradient(135deg, #FF416C, #FF9A44);">1</div>
+            <div class="step-content">
+              <h4>Set Up Your Venue</h4>
+              <p>Create your venue profile with type, location, capacity, and a brief description.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number" style="background: linear-gradient(135deg, #FF416C, #FF9A44);">2</div>
+            <div class="step-content">
+              <h4>Browse Musicians</h4>
+              <p>Search by genre or city, view profiles, and find the perfect fit for your ambiance.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number" style="background: linear-gradient(135deg, #FF416C, #FF9A44);">3</div>
+            <div class="step-content">
+              <h4>Send Booking Request</h4>
+              <p>Pick a date and time, add event notes, and send a request — it's that easy.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number" style="background: linear-gradient(135deg, #FF416C, #FF9A44);">4</div>
+            <div class="step-content">
+              <h4>Host the Show</h4>
+              <p>Once accepted, you're all set. Track booking status and manage your upcoming events.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ GENRES ═══════════ -->
+  <section class="genres section-pad" id="genres">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="label">Genres</div>
+        <h2>Every Sound.<br /><span class="text-gradient">Every Style.</span></h2>
+        <p>From Acoustic to World music — discover talent across 15+ genres.</p>
+      </div>
+    </div>
+    <div class="genres-scroll fade-up">
+      <span class="genre-chip active">Acoustic</span>
+      <span class="genre-chip">Blues</span>
+      <span class="genre-chip">Classical</span>
+      <span class="genre-chip">Country</span>
+      <span class="genre-chip">Electronic</span>
+      <span class="genre-chip active">Folk</span>
+      <span class="genre-chip">Indie</span>
+      <span class="genre-chip">Jazz</span>
+      <span class="genre-chip">Latin</span>
+      <span class="genre-chip active">Pop</span>
+      <span class="genre-chip">R&B</span>
+      <span class="genre-chip">Reggae</span>
+      <span class="genre-chip active">Rock</span>
+      <span class="genre-chip">Soul</span>
+      <span class="genre-chip">World</span>
+      <!-- Duplicate for infinite scroll -->
+      <span class="genre-chip active">Acoustic</span>
+      <span class="genre-chip">Blues</span>
+      <span class="genre-chip">Classical</span>
+      <span class="genre-chip">Country</span>
+      <span class="genre-chip">Electronic</span>
+      <span class="genre-chip active">Folk</span>
+      <span class="genre-chip">Indie</span>
+      <span class="genre-chip">Jazz</span>
+      <span class="genre-chip">Latin</span>
+      <span class="genre-chip active">Pop</span>
+      <span class="genre-chip">R&B</span>
+      <span class="genre-chip">Reggae</span>
+      <span class="genre-chip active">Rock</span>
+      <span class="genre-chip">Soul</span>
+      <span class="genre-chip">World</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ TESTIMONIALS ═══════════ -->
+  <section class="testimonials section-pad" id="testimonials">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="label">Testimonials</div>
+        <h2>Loved by <span class="text-gradient">Musicians & Venues</span></h2>
+        <p>See what our users have to say about their experience with Gig Live.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up">
+          <div class="testimonial-stars">
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+          </div>
+          <blockquote>"I got my first café gig within a week of signing up. The booking system is smooth and the
+            dashboard keeps me on top of everything."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: var(--gradient-primary);">RK</div>
+            <div>
+              <div class="testimonial-name">Rohan Kapoor</div>
+              <div class="testimonial-role">Acoustic Guitarist, Delhi</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up" style="transition-delay:0.1s">
+          <div class="testimonial-stars">
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+          </div>
+          <blockquote>"Finding quality musicians for our café used to be a hassle. With Gig Live, we filter by genre and
+            city — done in minutes."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, #FF416C, #FF9A44);">PS</div>
+            <div>
+              <div class="testimonial-name">Priya Sharma</div>
+              <div class="testimonial-role">Café Owner, Mumbai</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up" style="transition-delay:0.2s">
+          <div class="testimonial-stars">
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star</span>
+            <span class="material-icons-round">star_half</span>
+          </div>
+          <blockquote>"The dark theme looks gorgeous and the OTP login is super quick. I've performed at 15+ venues
+            already through the app!"</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, #10B981, #059669);">AM</div>
+            <div>
+              <div class="testimonial-name">Arjun Mehta</div>
+              <div class="testimonial-role">Jazz Keyboardist, Pune</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CTA / DOWNLOAD ═══════════ -->
+  <section class="cta-section" id="download">
+    <div class="container">
+      <div class="cta-box fade-up">
+        <h2>Ready to <span class="text-gradient">Go Live?</span></h2>
+        <p>Download Gig Live and start your journey — whether you're here to perform or to find the perfect live act.
+        </p>
+        <div class="cta-buttons">
+          <a href="#" class="store-btn">
+            <span class="material-icons-round" style="font-size:32px">android</span>
+            <div>
+              <div class="store-btn-label">GET IT ON</div>
+              <div class="store-btn-name">Google Play</div>
+            </div>
+          </a>
+          <a href="#" class="store-btn">
+            <span class="material-icons-round" style="font-size:32px">apple</span>
+            <div>
+              <div class="store-btn-label">COMING SOON ON</div>
+              <div class="store-btn-name">App Store</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" style="margin-bottom: 4px;">
+            <div class="nav-logo-icon">
+              <img src="icon.png" alt="Gig Live">
+            </div>
+            GIG LIVE
+          </a>
+          <p>India's live music marketplace. Connecting independent musicians with venues for unforgettable
+            performances.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#download">Download</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Gig Live. All rights reserved. Made with ❤️ for musicians & venues.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social" aria-label="Instagram">
+            <span class="material-icons-round">photo_camera</span>
+          </a>
+          <a href="#" class="footer-social" aria-label="Twitter">
+            <span class="material-icons-round">tag</span>
+          </a>
+          <a href="#" class="footer-social" aria-label="YouTube">
+            <span class="material-icons-round">play_circle</span>
+          </a>
+          <a href="#" class="footer-social" aria-label="LinkedIn">
+            <span class="material-icons-round">work</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Mobile menu toggle ──
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const icon = hamburger.querySelector('.material-icons-round');
+      icon.textContent = navLinks.classList.contains('open') ? 'close' : 'menu';
+    });
+    // Close mobile menu on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.querySelector('.material-icons-round').textContent = 'menu';
+      });
+    });
+
+    // ── Scroll reveal (Intersection Observer) ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── Counter Animation ──
+    function animateCounter(el, target, suffix = '') {
+      const numTarget = parseInt(target.replace(/[^0-9]/g, ''));
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * numTarget);
+        el.textContent = current.toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.animated) {
+          entry.target.dataset.animated = 'true';
+          const text = entry.target.textContent;
+          const suffix = text.includes('+') ? '+' : '';
+          animateCounter(entry.target, text, suffix);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-item h3').forEach(el => statsObserver.observe(el));
+
+    // ── Nav background on scroll ──
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(15, 12, 41, 0.92)';
+      } else {
+        nav.style.background = 'rgba(15, 12, 41, 0.7)';
+      }
+    });
+  </script>
+
+</body>
+
+</html>
