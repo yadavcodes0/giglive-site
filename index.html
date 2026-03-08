@@ -1125,6 +1125,56 @@
         font-size: 28px;
       }
     }
+
+    /* ── 3D Effects ── */
+    .phone-mockup {
+      transform-style: preserve-3d;
+    }
+
+    .phone-screen {
+      transform: translateZ(30px);
+      transform-style: preserve-3d;
+    }
+
+    .phone-screen>* {
+      transform-style: preserve-3d;
+    }
+
+    .phone-screen-glow {
+      transform: translateZ(-20px);
+    }
+
+    .feature-card {
+      transform-style: preserve-3d;
+    }
+
+    .feature-icon {
+      transform: translateZ(40px);
+    }
+
+    .feature-card h3 {
+      transform: translateZ(30px);
+    }
+
+    .feature-card p {
+      transform: translateZ(15px);
+    }
+
+    .testimonial-card {
+      transform-style: preserve-3d;
+    }
+
+    .testimonial-stars {
+      transform: translateZ(30px);
+    }
+
+    .testimonial-card blockquote {
+      transform: translateZ(40px);
+    }
+
+    .testimonial-author {
+      transform: translateZ(25px);
+    }
   </style>
 </head>
 
@@ -1188,23 +1238,139 @@
         <!-- Phone mockup -->
         <div class="phone-mockup">
           <div class="phone-notch"></div>
-          <div class="phone-screen">
+          <div class="phone-screen" style="padding: 30px 16px 20px;">
             <div class="phone-screen-glow"></div>
-            <div class="phone-logo-ring">
-              <div class="phone-logo-inner">
-                <img src="icon.png" alt="Gig Live">
+
+            <!-- App Header -->
+            <div style="display: flex; align-items: center; margin-bottom: 20px; position: relative; z-index: 1;">
+              <div
+                style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; font-size: 13px; color: #fff;">
+                RK</div>
+              <div style="flex: 1; margin: 0 10px;">
+                <div style="font-family: var(--font-heading); font-weight: 700; font-size: 13px; color: #fff;">Hello,
+                  Rohan 👋</div>
+                <div style="font-size: 10px; color: rgba(255,255,255,0.5);">Ready for tonight's set?</div>
+              </div>
+              <div
+                style="width: 30px; height: 30px; border-radius: 50%; background: var(--dark-surface); border: 1px solid var(--dark-divider); display: flex; align-items: center; justify-content: center;">
+                <span class="material-icons-round"
+                  style="font-size: 15px; color: rgba(255,255,255,0.5);">notifications_none</span>
               </div>
             </div>
-            <div class="phone-title">Welcome to Gig Live</div>
-            <div class="phone-subtitle">Sign in to find your next gig or the perfect artist.</div>
-            <div class="phone-label">Phone Number</div>
-            <div class="phone-input">
-              <div class="phone-input-prefix">🇮🇳 +91</div>
-              <div class="phone-input-field">Enter mobile number</div>
+
+            <!-- Earnings Card -->
+            <div
+              style="background: linear-gradient(135deg, #8E2DE2, #6A11CB); border-radius: 14px; padding: 14px; margin-bottom: 16px; position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(142, 45, 226, 0.3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div style="font-size: 10px; color: rgba(255,255,255,0.7); font-weight: 600;">Total Earnings</div>
+                <div
+                  style="background: rgba(16, 185, 129, 0.2); color: #10B981; font-size: 8px; font-weight: 700; padding: 3px 6px; border-radius: 6px;">
+                  This month</div>
+              </div>
+              <div
+                style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; color: #fff; margin-bottom: 10px;">
+                ₹42,500</div>
+
+              <svg width="100%" height="35" viewBox="0 0 200 35" preserveAspectRatio="none">
+                <path d="M0,25 C30,25 40,12 70,16 C100,20 120,4 150,12 C180,20 190,8 200,8" fill="none"
+                  stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" />
+                <path d="M0,25 C30,25 40,12 70,16 C100,20 120,4 150,12 C180,20 190,8 200,8 L200,35 L0,35 Z"
+                  fill="url(#grad)" />
+                <defs>
+                  <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="rgba(255, 255, 255, 0.2)" />
+                    <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div style="display: flex; justify-content: space-between; margin-top: 4px;">
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">M</span>
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">T</span>
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">W</span>
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">T</span>
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">F</span>
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">S</span>
+                <span style="font-size: 7px; color: rgba(255,255,255,0.4);">S</span>
+              </div>
             </div>
-            <div class="phone-btn">
-              Continue
-              <span class="material-icons-round" style="font-size:18px">arrow_forward</span>
+
+            <!-- Stats Row -->
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; position: relative; z-index: 1;">
+              <div
+                style="flex: 1; background: var(--dark-surface); border: 1px solid rgba(142, 45, 226, 0.2); border-radius: 12px; padding: 10px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                  <div
+                    style="width: 20px; height: 20px; border-radius: 5px; background: linear-gradient(135deg, #8E2DE2, #4A00E0); display: flex; align-items: center; justify-content: center;">
+                    <span class="material-icons-round" style="font-size: 12px; color: #fff;">description</span>
+                  </div>
+                  <div
+                    style="background: rgba(142, 45, 226, 0.15); color: #8E2DE2; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 5px;">
+                    +3</div>
+                </div>
+                <div style="font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: #fff;">42</div>
+                <div style="font-size: 8px; color: rgba(255,255,255,0.4);">Gigs Done</div>
+              </div>
+              <div
+                style="flex: 1; background: var(--dark-surface); border: 1px solid rgba(255, 65, 108, 0.2); border-radius: 12px; padding: 10px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                  <div
+                    style="width: 20px; height: 20px; border-radius: 5px; background: linear-gradient(135deg, #FF416C, #FF9A44); display: flex; align-items: center; justify-content: center;">
+                    <span class="material-icons-round" style="font-size: 12px; color: #fff;">star</span>
+                  </div>
+                  <div
+                    style="background: rgba(255, 65, 108, 0.15); color: #FF416C; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 5px;">
+                    4.9</div>
+                </div>
+                <div style="font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: #fff;">18</div>
+                <div style="font-size: 8px; color: rgba(255,255,255,0.4);">Accepted</div>
+              </div>
+            </div>
+
+            <!-- Booking Requests -->
+            <div
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; position: relative; z-index: 1;">
+              <div style="font-family: var(--font-heading); font-weight: 700; font-size: 12px; color: #fff;">Booking
+                Requests <span style="color: rgba(255,255,255,0.4);">(1)</span></div>
+              <div style="color: var(--primary-light); font-size: 9px; font-weight: 600;">View All</div>
+            </div>
+
+            <div
+              style="background: var(--dark-surface); border: 1px solid var(--dark-divider); border-radius: 12px; padding: 10px; position: relative; z-index: 1;">
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <div
+                  style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, rgba(142, 45, 226, 0.3), rgba(255, 65, 108, 0.15)); display: flex; align-items: center; justify-content: center;">
+                  <span class="material-icons-round" style="font-size: 16px; color: rgba(255,255,255,0.5);">store</span>
+                </div>
+                <div style="flex: 1;">
+                  <div style="font-family: var(--font-heading); font-weight: 700; font-size: 11px; color: #fff;">The
+                    Acoustic Café</div>
+                  <div
+                    style="display: flex; align-items: center; color: rgba(255,255,255,0.4); font-size: 8px; margin-top: 2px;">
+                    <span class="material-icons-round"
+                      style="font-size: 9px; color: var(--primary-light); margin-right: 2px;">location_on</span>
+                    Bandra West, Mumbai
+                  </div>
+                  <div style="color: var(--primary-light); font-size: 8px; font-weight: 600; margin-top: 3px;">12 Oct •
+                    08:00 PM</div>
+                </div>
+                <div
+                  style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #10B981; font-size: 8px; font-weight: 700; padding: 4px 8px; border-radius: 6px;">
+                  Accept</div>
+              </div>
+            </div>
+
+            <!-- Bottom Navigation Bar Fake -->
+            <div
+              style="position: absolute; bottom: 10px; left: 16px; right: 16px; height: 44px; background: rgba(15, 12, 41, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--dark-divider); border-radius: 22px; display: flex; justify-content: space-around; align-items: center; z-index: 10;">
+              <div style="display: flex; flex-direction: column; align-items: center; color: var(--primary-light);">
+                <span class="material-icons-round" style="font-size: 18px;">home</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; color: rgba(255,255,255,0.4);">
+                <span class="material-icons-round" style="font-size: 18px;">calendar_today</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; color: rgba(255,255,255,0.4);">
+                <span class="material-icons-round" style="font-size: 18px;">person_outline</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1635,6 +1801,28 @@
     });
   </script>
 
+  <!-- 3D Tilt Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script>
+    // Initialize 3D effects
+    VanillaTilt.init(document.querySelectorAll(".phone-mockup"), {
+      max: 12,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.3,
+      perspective: 1000,
+      scale: 1.02
+    });
+
+    VanillaTilt.init(document.querySelectorAll(".feature-card, .testimonial-card"), {
+      max: 10,
+      speed: 300,
+      glare: true,
+      "max-glare": 0.15,
+      perspective: 1000,
+      scale: 1.05
+    });
+  </script>
 </body>
 
 </html>
