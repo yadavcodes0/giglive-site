@@ -1112,7 +1112,22 @@
 
       .phone-screen {
         min-height: 440px;
-        padding: 36px 14px 20px;
+        padding: 24px 12px 16px;
+      }
+
+      .phone-screen>div {
+        transform: scale(0.85);
+        /* Scale down the fake UI contents by 15% */
+        transform-origin: top center;
+        width: 117.6%;
+        /* Compensate width due to scale down (100 / 0.85 approx 117.6) */
+        margin-left: -8.8%;
+      }
+
+      .phone-screen>div.phone-screen-glow {
+        transform: translateZ(-20px) scale(0.85);
+        width: 150px;
+        margin-left: 0;
       }
     }
 
